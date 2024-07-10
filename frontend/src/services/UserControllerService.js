@@ -11,22 +11,42 @@ export class UserControllerService {
         throw new Error('Failed to register user');
       }
       console.log(response.status);
-    })
+    });
   }
 
   static async loginUser(data) {
-    const response = await fetch('http://localhost:8080/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    }).then(response => {
+    try {
+      const response = await fetch('http://localhost:8080/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+        credentials: 'include'
+      });
+
       if (!response.ok) {
         throw new Error('Failed to login user');
       }
-      return response.json();
-    })
-    return response;
+
+      const responseText = await response.text();
+      console.log('Response text:', responseText);
+
+      if (responseText) {
+        const responseData = JSON.parse(responseText);
+        console.log('User logged in successfully');
+        console.log('Response:', responseData);
+      } else {
+        console.log('User logged in successfully but no JSON response');
+      }
+
+      // Verifique se o cookie foi definido
+      console.log('Cookie:', document.cookie);
+
+    } catch (error) {
+      console.error('Error:', error);
+    }
   }
 }
+
+

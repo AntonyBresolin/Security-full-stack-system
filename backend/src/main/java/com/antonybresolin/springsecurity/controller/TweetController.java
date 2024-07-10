@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/tweets")
@@ -79,7 +78,12 @@ public class TweetController {
 
     @GetMapping("/feed")
     public ResponseEntity<FeedDto> feed(@RequestParam(value = "page", defaultValue = "0") int page,
-                                        @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
+                                        @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+                                        JwtAuthenticationToken token) {
+
+
+        String username = token.getName();
+        System.out.println("Authenticated user: " + username);
 
         var tweets = tweetRepository.findAll(
                         PageRequest.of(page, pageSize, Sort.Direction.DESC, "creationTimestamp"))
