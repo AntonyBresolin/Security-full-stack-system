@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, {  useState } from 'react';
 import { UserControllerService } from '../../services/UserControllerService';
+import { useNavigate } from 'react-router-dom';
 
 const Login = ({ onClose }) => {
   const [register, setRegister] = useState(false);
+  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -13,8 +15,12 @@ const Login = ({ onClose }) => {
     }
 
     UserControllerService.loginUser(data)
-      .then(response => {
-        console.log(response);
+      .then(() => {
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 500);
+
+        
       }
       ).catch(error => {
         console.error(error);
