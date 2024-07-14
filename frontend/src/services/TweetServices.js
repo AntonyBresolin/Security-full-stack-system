@@ -5,17 +5,15 @@ export class TweetServices {
     const response = await fetch('http://localhost:8080/tweets/feed', {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include' // Inclui cookies na requisição
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${sessionStorage.getItem('user')}` 
+      }
     });
-
     if (!response.ok) {
       throw new Error('Failed to fetch tweets');
     }
 
     const responseData = await response.json();
-    console.log(responseData);
     return responseData;
   }
 }
