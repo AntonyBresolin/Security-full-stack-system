@@ -1,24 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { TweetServices } from '../../services/TweetServices';
+import TableTwitter from '../../components/Table/TableTwitter';
 
 const DashboardUser = () => {
+  const [tweets, setTweets] = useState([]);
 
-  const toggleListarUsers = () => {
-    TweetServices.listTweets()
-      .then(response => {
-        console.log(response);
-      }).catch(error => {
-        console.error(error);
-      });
-  }
+  useEffect(() => {
+    const fetchTweets = async () => {
+      try {
+        const data = await TweetServices.listTweets();
+        setTweets(data);
+      } catch (error) {
+        console.error('Failed to fetch tweets:', error);
+      }
+    };
+
+    fetchTweets();
+  }, []);
+
   return (
-    <>
-      <div className="">
-        <h1>Dashboard do Usuário</h1>
-        <p>Esta é uma rota privada. Somente usuários autenticados podem acessá-la.</p>
-        <button className='bg-white text-blue-500 px-10 py-3 mt-4 rounded-2xl cursor-pointer hover:bg-blue-100 ease-in-out duration-150' onClick={toggleListarUsers}>Listar</button>
-      </div>
-    </>
+    <main className='flex items-start justify-center'>
+      <TableTwitter data={tweets.feedItems ? tweets.feedItems : {}} />
+    </main>
   );
 };
 

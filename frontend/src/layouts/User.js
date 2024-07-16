@@ -16,12 +16,14 @@ const User = () => {
 
   return (
     <>
-      <NavbarUser />
-      <Routes>
-        <Route path="/" element={<PrivateRoute element={DashboardUser} />}>
-          {/*<Route path="settings" element={<PrivateRoute element={Settings} />} />*/}
-        </Route>
-      </Routes>
+      <div className='h-screen w-screen overflow-hidden bg-slate-100'>
+        <NavbarUser />
+        <Routes>
+          <Route path="/" element={<PrivateRoute element={DashboardUser} />}>
+            {/*<Route path="settings" element={<PrivateRoute element={Settings} />} />*/}
+          </Route>
+        </Routes>
+      </div>
     </>
   );
 };
