@@ -1,4 +1,5 @@
 export class UserControllerService {
+
   static async registerUser(data) {
     await fetch('http://localhost:8080/users/create', {
       method: 'POST',
@@ -30,6 +31,10 @@ export class UserControllerService {
     } catch (error) {
       console.error('Error:', error);
     }
+  }
+
+  static async logoutUser() {
+    sessionStorage.removeItem('user');
   }
 }
 
