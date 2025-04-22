@@ -61,6 +61,9 @@ public class User {
     }
 
     public boolean isLoginCorrect(LoginRequest loginRequest, PasswordEncoder passwordEncoder) {
+        if (loginRequest == null) {
+            throw new IllegalArgumentException("Credenciais inválidas.");
+        }
         return passwordEncoder.matches(loginRequest.password(), this.password);
     }
 }

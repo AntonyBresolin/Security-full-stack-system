@@ -80,8 +80,6 @@ public class TweetController {
     public ResponseEntity<FeedDto> feed(@RequestParam(value = "page", defaultValue = "0") int page,
                                         @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                         JwtAuthenticationToken token) {
-
-
         String username = token.getName();
         System.out.println("Authenticated user: " + username);
 
