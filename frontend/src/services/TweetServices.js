@@ -5,8 +5,8 @@ export class TweetServices {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${sessionStorage.getItem('user')}` 
-      }
+      },
+      credentials: 'include'
     });
 
     if (!response.ok) {
