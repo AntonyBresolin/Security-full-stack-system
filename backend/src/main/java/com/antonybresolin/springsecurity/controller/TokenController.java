@@ -75,6 +75,20 @@ public class TokenController {
         return ResponseEntity.ok(responseBody);
     }
 
+    @PostMapping("/api/logout")
+    public ResponseEntity<Map<String, String>> logout(HttpServletResponse response) {
+        Cookie cookie = new Cookie("accessToken", null);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(false);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+
+        Map<String, String> responseBody = new HashMap<>();
+        responseBody.put("message", "Logout successful");
+        return ResponseEntity.ok(responseBody);
+    }
+
 
 
 }

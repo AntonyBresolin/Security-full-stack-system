@@ -33,8 +33,11 @@ export class UserControllerService {
 
   static async logoutUser() {
     try {
-      await fetch('http://localhost:8080/logout', {
+      await fetch('http://localhost:8080/api/logout', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         credentials: 'include'
       });
     } catch (error) {
