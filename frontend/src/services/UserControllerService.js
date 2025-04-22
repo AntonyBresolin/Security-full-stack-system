@@ -22,11 +22,9 @@ export class UserControllerService {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
+        credentials: 'include'
       }).then(response => {
-        response.json().then(data => {
-          sessionStorage.setItem('user', data.accessToken);
-        });
       });
     } catch (error) {
       console.error('Error:', error);
@@ -34,7 +32,14 @@ export class UserControllerService {
   }
 
   static async logoutUser() {
-    sessionStorage.removeItem('user');
+    try {
+      await fetch('http://localhost:8080/logout', {
+        method: 'POST',
+        credentials: 'include'
+      });
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
   }
 }
 

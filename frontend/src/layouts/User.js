@@ -1,27 +1,45 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import PrivateRoute from '../routes/PrivateRoute';
 import DashboardUser from '../views/user/DashboardUser';
 import NavbarUser from '../components/Navbar/NavbarUser';
+import { AuthService } from '../services/AuthService';
 
 const User = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const token = sessionStorage.getItem("user");
-    if (!token || token === '' || token === 'undefined' || token === null) {
-      navigate('/');
-    }
+    const checkAuth = async () => {
+      try {
+        const authStatus = await AuthService.checkAuthStatus();
+        setIsAuthenticated(authStatus.authenticated);
+        if (!authStatus.authenticated) {
+          navigate('/');
+        }
+      } catch (error) {
+        console.error("Auth check failed:", error);
+        navigate('/');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkAuth();
   }, [navigate]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>
       <div className='h-screen w-screen overflow-hidden bg-slate-100'>
         <NavbarUser />
         <Routes>
-          <Route path="/" element={<PrivateRoute element={DashboardUser} />}>
-            {/*<Route path="settings" element={<PrivateRoute element={Settings} />} />*/}
-          </Route>
+          <Route path="/" element={<PrivateRoute isAuthenticated={isAuthenticated} element={DashboardUser} />} />
+          {/* Outras rotas protegidas */}
         </Routes>
       </div>
     </>
